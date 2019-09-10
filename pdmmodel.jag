@@ -1,0 +1,13 @@
+model {
+      for (k in 1 : Ktopics ) {
+          worddist[k,1:Nwords] ~ ddirch(alphaWords)
+      }
+      for( d in 1 : Ndocs ) {
+          topicdist[d,1:Ktopics] ~ ddirch(alphaTopics)	
+		      gamma[1,d] ~ dgamma(1, 1)
+		      for (n in 1 : Nwords){
+				      wordCount[d,n] ~ dpois(worddist[wordtopic[d,n], n]*E[d,n]*gamma[1,d])
+				      wordtopic[d,n] ~ dcat(topicdist[d,1:Ktopics])
+		      }
+      }
+}
